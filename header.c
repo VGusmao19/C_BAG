@@ -1,4 +1,5 @@
 #include "header.h"
+#include <stdio.h>
 #include <stdlib.h>
 #define BAG_VALUE 20
 #define ITEM_VALUE 9
@@ -127,4 +128,23 @@ void menu()
 {
     printf("1 - Jogar\n");
     printf("Aperte qualquer tecla para sair\n");
+}
+
+int preenche_vetor(int vetor[])
+{
+    for(int i=0; i<ITEM_VALUE+1; i++)
+    {
+        vetor[i] = i+11;
+    }
+    return vetor;
+}
+
+void arquivo(int vitoria_jogador, int vitoria_maquina)
+{
+    FILE *arq;
+
+    arq = fopen("texto3.txt", "w");
+    fprintf(arq, "Jogador - Maquina\n");
+    fprintf(arq, "%d\t%d", vitoria_jogador, vitoria_maquina);
+    fclose(arq);
 }
