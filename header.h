@@ -17,5 +17,7 @@ void mostra_mochila(int bag, int value);/*mostra o peso e o valor da mochila do 
 void menu();/*mostra o menu inicial*/
 int preenche_vetor(int vetor[]);/*preenche os vetores com valores aleatorios*/
 void arquivo(int vitoria_jogador, int vitoria_maquina);/*cria arquivo*/
-
+void cenarios();/*faz a leitura do cenário*/
+int dificuldade(int dificuldade, int *valor, int itens_maquina[]);/*retorna o melhor valor para ser jogado pela maqina*/
+int salva_indices(int indice);
 #endif // HEADER_H_INCLUDED

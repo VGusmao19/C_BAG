@@ -33,6 +33,7 @@ int main()
     int ind_maquina = 0;
     int valida_jogada_maquina = FALSE;
     int vitoria_maquina = 0;
+    int z;
     //preenchendo os objetos que entrarão na mochila
     preenche_peso(peso);
     preenche_valor(valor);
@@ -43,81 +44,83 @@ int main()
         printf("Menu principal!\n");
         menu();
         scanf("%d", &opcao);
-        if(opcao != 1)
+        if(opcao == 1)
         {
-            jogar = FALSE;
-        }
-        while(opcao == 1)
-        {
-            while(mochila_peso < 20 && mochila_peso_maquina <20)
+            int nivel = 0;
+            Menu_Dificuldade();
+            scanf("%d", &nivel);
+            while(opcao == 1)
             {
-                //printa(itens_maquina);
-                //printf("Fim do vetor maquina\n");
-                //printa(itens);
-                //printf("Fim do vetor jogador\n");
-                valida_jogada_maquina = FALSE;
-                valida_jogada_jogador = FALSE;
-                mostra_capacidade();
-                mostra_mochila(mochila_peso, mochila_valor);
-                printf("\nDA MAQUINA: \n");
-                mostra_mochila(mochila_peso_maquina, mochila_valor_maquina);
-                //printf("DA MAQUINA!!! \n");
-                mostra_obj();
-                mostra_peso(peso);
-                mostra_valor(valor);
-                while(valida_jogada_jogador == FALSE)
+                while(mochila_peso < 20 && mochila_peso_maquina <20)
                 {
-                    if(turno%2 == 0)
+                    valida_jogada_maquina = FALSE;
+                    valida_jogada_jogador = FALSE;
+                    mostra_capacidade();
+                    mostra_mochila(mochila_peso, mochila_valor);
+                    printf("\nDA MAQUINA: \n");
+                    mostra_mochila(mochila_peso_maquina, mochila_valor_maquina);
+                    //printf("DA MAQUINA!!! \n");
+                    mostra_obj();
+                    mostra_peso(peso);
+                    mostra_valor(valor);
+                    while(valida_jogada_jogador == FALSE)
                     {
-                        printf("Escolha o numero do OBJET para colocar na mochila:");
-                        scanf("%d", &obj);
-                        recebe_retorno = verifica(itens, obj-1);
-                        if(recebe_retorno == 0)
+                        if(turno%2 == 0)
                         {
-                            recebe_retorno = verifica(itens_maquina, obj-1);
+                            printf("Escolha o numero do OBJET para colocar na mochila:");
+                            scanf("%d", &obj);
+                            recebe_retorno = verifica(itens, obj-1);
                             if(recebe_retorno == 0)
                             {
-                                itens[aux] = obj-1;
-                                mochila_peso += peso[obj-1];
-                                mochila_valor += valor[obj-1];
-                                printf("Objeto foi colocado na mochila\n");
-                                aux++;
-                                turno++;
-                                valida_jogada_jogador = TRUE;
+                                recebe_retorno = verifica(itens_maquina, obj-1);
+                                if(recebe_retorno == 0)
+                                {
+                                    itens[aux] = obj-1;
+                                    mochila_peso += peso[obj-1];
+                                    mochila_valor += valor[obj-1];
+                                    printf("Objeto foi colocado na mochila\n");
+                                    aux++;
+                                    turno++;
+                                    valida_jogada_jogador = TRUE;
+                                }else
+                                {
+                                    printf("A maquina ja escolheu esse objeto. Por favor escolha outro:\n");
+                                }
                             }else
                             {
-                                printf("A maquina ja escolheu esse objeto. Por favor escolha outro:\n");
+                                printf("voce ja escolheu esse objeto. Por favor escolha outro:\n");
                             }
-                        }else
-                        {
-                            printf("voce ja escolheu esse objeto. Por favor escolha outro:\n");
                         }
                     }
-                }
-                if(turno%2 != 0)
-                {
-                    while(valida_jogada_maquina == FALSE)
+                    if(turno%2 != 0)
                     {
-                        rand_maquina = rand()%10;
-                        //printf("\nVALORDO RAND MAQUINA: %d\n", rand_maquina);
-                        aux_maquina = verifica(itens, rand_maquina);
-                        if(aux_maquina == 0)
+                        while(valida_jogada_maquina == FALSE)
                         {
-                            aux_maquina = verifica(itens_maquina, rand_maquina);
+                            rand_maquina = rand()%10;
+                            //z = rand_maquina; APENAS PARA TESTE
+                            //printf("aleatorio: %d\n", z); APENAS PARA TESTE
+                            rand_maquina = dificuldade(nivel, valor, itens_maquina);
+                            //z = rand_maquinA; APENAS PARA TESTE
+                            //printf("modificado: %d\n", z);
+                            //printf("\nVALORDO RAND MAQUINA: %d\n", rand_maquina); APENAS PARA TESTE
+                            aux_maquina = verifica(itens, rand_maquina);
                             if(aux_maquina == 0)
                             {
-                                itens_maquina[ind_maquina] = rand_maquina;
-                                mochila_peso_maquina +=  peso[rand_maquina];
-                                mochila_valor_maquina +=  valor[rand_maquina];
-                                printf("A vez da maquina acabou. Chegou sua vez de jogar:\n");
-                                ind_maquina++;
-                                turno++;
-                                valida_jogada_maquina = TRUE;
+                                aux_maquina = verifica(itens_maquina, rand_maquina);
+                                if(aux_maquina == 0)
+                                {
+                                    itens_maquina[ind_maquina] = rand_maquina;
+                                    mochila_peso_maquina +=  peso[rand_maquina];
+                                    mochila_valor_maquina +=  valor[rand_maquina];
+                                    printf("A vez da maquina acabou. Chegou sua vez de jogar:\n");
+                                    ind_maquina++;
+                                    turno++;
+                                    valida_jogada_maquina = TRUE;
+                                }
                             }
                         }
                     }
                 }
-            }
                 if(mochila_peso >= 20 || mochila_peso_maquina >= 20)
                 {
                     if(mochila_valor < mochila_valor_maquina)
@@ -127,7 +130,6 @@ int main()
                         printf("Capacidade: %d/%d. Valor da mochila: %d\n", mochila_peso, BAG_VALUE, mochila_valor);
                         printf("Capacidade(maquina): %d/%d. Valor da mochila(maquina): %d\n", mochila_peso_maquina, BAG_VALUE, mochila_valor_maquina);
                         menu();
-                        scanf("%d", &opcao);
                         if(opcao == 1)
                         {
                             *valor = malloc(ITEM_VALUE*sizeof(int)); //valores em dinheiro dos objetos
@@ -150,6 +152,8 @@ int main()
                             ind_maquina = 0;
                             preenche_vetor(itens);
                             preenche_vetor(itens_maquina);
+                            Menu_Dificuldade();
+                            scanf("%d", &nivel);
                         }
                         else if(opcao == 2)
                         {
@@ -185,6 +189,8 @@ int main()
                             ind_maquina = 0;
                             preenche_vetor(itens);
                             preenche_vetor(itens_maquina);
+                            Menu_Dificuldade();
+                            scanf("%d", &nivel);
                         }
                         else if(opcao == 2)
                         {
@@ -192,6 +198,14 @@ int main()
                         }
                     }
                 }
+            }
+        }else if(opcao == 2)
+        {
+            cenarios();
+            jogar = FALSE;
+        }else
+        {
+            jogar = FALSE;
         }
     }
     arquivo(vitoria_jogador, vitoria_maquina);
